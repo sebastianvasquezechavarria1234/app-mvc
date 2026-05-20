@@ -1,12 +1,164 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Tablero de Tareas";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<!-- Cabecera del Dashboard -->
+<div class="dashboard-header">
+    <div>
+        <h1 class="title-premium">Mi Espacio de Trabajo</h1>
+        <p class="subtitle-premium">Organiza, prioriza y completa tus proyectos con fluidez y estilo.</p>
+    </div>
+    <div>
+        <button class="btn btn-premium" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+            <i class="bi bi-plus-circle-fill"></i>Nueva Tarea
+        </button>
+    </div>
+</div>
+
+<!-- Grid de Indicadores Estadísticos -->
+<div class="stats-grid">
+    <div class="stat-card total">
+        <div class="stat-info">
+            <span class="stat-label">Tareas Totales</span>
+            <span id="stat-total" class="stat-value">0</span>
+        </div>
+        <div class="stat-icon">
+            <i class="bi bi-layers-half"></i>
+        </div>
+    </div>
     
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    s
+    <div class="stat-card todo">
+        <div class="stat-info">
+            <span class="stat-label">Por Hacer</span>
+            <span id="stat-todo" class="stat-value">0</span>
+        </div>
+        <div class="stat-icon">
+            <i class="bi bi-bookmark-dash"></i>
+        </div>
+    </div>
+    
+    <div class="stat-card inprogress">
+        <div class="stat-info">
+            <span class="stat-label">En Progreso</span>
+            <span id="stat-inprogress" class="stat-value">0</span>
+        </div>
+        <div class="stat-icon">
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+    </div>
+    
+    <div class="stat-card done">
+        <div class="stat-info">
+            <span class="stat-label">Completadas</span>
+            <span id="stat-done" class="stat-value">0</span>
+        </div>
+        <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Tablero Kanban -->
+<div class="kanban-grid">
+    <!-- Columna: Por Hacer -->
+    <div class="kanban-column column-todo" id="col-Todo" ondragover="allowDrop(event)" ondrop="drop(event, 'Todo')" ondragenter="dragEnter(event, 'Todo')" ondragleave="dragLeave(event, 'Todo')">
+        <div class="column-header">
+            <span class="column-title text-purple">
+                <i class="bi bi-circle me-1"></i>Por Hacer
+            </span>
+            <span class="column-count" id="count-Todo">0</span>
+        </div>
+        <div class="task-list" id="list-Todo">
+            <!-- Cargador dinámico -->
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary spinner-border-sm" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna: En Progreso -->
+    <div class="kanban-column column-inprogress" id="col-InProgress" ondragover="allowDrop(event)" ondrop="drop(event, 'InProgress')" ondragenter="dragEnter(event, 'InProgress')" ondragleave="dragLeave(event, 'InProgress')">
+        <div class="column-header">
+            <span class="column-title text-warning">
+                <i class="bi bi-play-circle me-1"></i>En Progreso
+            </span>
+            <span class="column-count" id="count-InProgress">0</span>
+        </div>
+        <div class="task-list" id="list-InProgress">
+            <div class="text-center py-4">
+                <div class="spinner-border text-warning spinner-border-sm" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna: Completado -->
+    <div class="kanban-column column-done" id="col-Done" ondragover="allowDrop(event)" ondrop="drop(event, 'Done')" ondragenter="dragEnter(event, 'Done')" ondragleave="dragLeave(event, 'Done')">
+        <div class="column-header">
+            <span class="column-title text-info">
+                <i class="bi bi-check2-all me-1"></i>Completado
+            </span>
+            <span class="column-count" id="count-Done">0</span>
+        </div>
+        <div class="task-list" id="list-Done">
+            <div class="text-center py-4">
+                <div class="spinner-border text-info spinner-border-sm" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Premium: Nueva Tarea -->
+<div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-premium">
+            <div class="modal-header modal-header-premium">
+                <h5 class="modal-title modal-title-premium" id="newTaskModalLabel">
+                    <i class="bi bi-magic me-2 text-purple"></i>Crear Nueva Tarea
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="newTaskForm" onsubmit="submitNewTask(event)">
+                <div class="modal-body modal-body-premium">
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label form-label-premium">Título de la Tarea</label>
+                        <input type="text" class="form-control form-control-premium" id="taskTitle" required placeholder="Ej: Implementar landing page" maxlength="60">
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label form-label-premium">Descripción</label>
+                        <textarea class="form-control form-control-premium" id="taskDescription" rows="3" required placeholder="Ej: Diseñar y desarrollar la sección principal con modo oscuro."></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="taskPriority" class="form-label form-label-premium">Prioridad</label>
+                            <select class="form-select form-control-premium" id="taskPriority">
+                                <option value="Low">Baja 🟢</option>
+                                <option value="Medium" selected>Media 🟡</option>
+                                <option value="High">Alta 🔴</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="taskStatus" class="form-label form-label-premium">Estado Inicial</label>
+                            <select class="form-select form-control-premium" id="taskStatus">
+                                <option value="Todo" selected>Por Hacer</option>
+                                <option value="InProgress">En Progreso</option>
+                                <option value="Done">Completado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-premium">
+                    <button type="button" class="btn btn-dark border-secondary px-4 rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-premium px-4">
+                        <i class="bi bi-check-lg"></i>Guardar Tarea
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

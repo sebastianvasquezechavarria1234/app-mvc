@@ -223,6 +223,432 @@ body {
     background: var(--border-glass);
     border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
     background: var(--accent-purple);
+}
+
+/* --- Kanban Dashboard Premium Styles --- */
+
+/* Header and Dashboard Layout */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title-premium {
+    font-weight: 800;
+    font-family: var(--font-primary);
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+}
+
+.subtitle-premium {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-family: var(--font-secondary);
+}
+
+/* Stat Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-purple);
+}
+
+.stat-card.todo::before { background: var(--accent-purple); }
+.stat-card.inprogress::before { background: #fbbf24; }
+.stat-card.done::before { background: var(--accent-cyan); }
+.stat-card.total::before { background: var(--accent-pink); }
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-glow);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 0.25rem;
+    font-family: var(--font-primary);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--accent-purple);
+    transition: var(--transition-smooth);
+}
+
+[data-theme="light"] .stat-icon {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.stat-card.todo .stat-icon { color: #8b5cf6; }
+.stat-card.inprogress .stat-icon { color: #fbbf24; }
+.stat-card.done .stat-icon { color: var(--accent-cyan); }
+.stat-card.total .stat-icon { color: var(--accent-pink); }
+
+/* Kanban Board Columns */
+.kanban-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .kanban-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.kanban-column {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+}
+
+.kanban-column.drag-over {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
+    background: rgba(16, 15, 28, 0.85);
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.column-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-primary);
+}
+
+.column-count {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+[data-theme="light"] .column-count {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.column-todo { border-top: 4px solid var(--accent-purple); }
+.column-inprogress { border-top: 4px solid #fbbf24; }
+.column-done { border-top: 4px solid var(--accent-cyan); }
+
+/* Task Cards inside Kanban */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+    min-height: 400px;
+    padding-bottom: 1.5rem;
+}
+
+.task-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: grab;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    user-select: none;
+}
+
+.task-card:active {
+    cursor: grabbing;
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    border-style: dashed;
+    border-color: var(--accent-purple);
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+[data-theme="light"] .task-card {
+    background: #fdfdfd;
+}
+
+[data-theme="light"] .task-card:hover {
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+}
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.task-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin: 0;
+    padding-right: 1.5rem;
+    line-height: 1.4;
+    font-family: var(--font-primary);
+}
+
+.priority-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-low {
+    background: var(--priority-low-bg);
+    color: var(--priority-low-text);
+}
+
+.priority-medium {
+    background: var(--priority-medium-bg);
+    color: var(--priority-medium-text);
+}
+
+.priority-high {
+    background: var(--priority-high-bg);
+    color: var(--priority-high-text);
+}
+
+.task-card-body {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    word-break: break-word;
+}
+
+.task-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 0.75rem;
+}
+
+[data-theme="light"] .task-card-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.task-date {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn-delete-task {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.2rem;
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+}
+
+.btn-delete-task:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Premium Buttons */
+.btn-premium {
+    background: linear-gradient(135deg, var(--accent-purple) 0%, #6366f1 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+    background: linear-gradient(135deg, var(--accent-purple-hover) 0%, #4f46e5 100%);
+    color: white;
+}
+
+.btn-premium:active {
+    transform: translateY(0);
+}
+
+/* Glassmorphic Modal */
+.modal-backdrop-premium {
+    background: rgba(8, 7, 13, 0.7) !important;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content-premium {
+    background: rgba(16, 15, 28, 0.85) !important;
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+[data-theme="light"] .modal-content-premium {
+    background: rgba(255, 255, 255, 0.85) !important;
+}
+
+.modal-header-premium {
+    border-bottom: 1px solid var(--border-glass) !important;
+    padding: 1.5rem 1.75rem !important;
+}
+
+.modal-title-premium {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-body-premium {
+    padding: 1.75rem !important;
+}
+
+.modal-footer-premium {
+    border-top: 1px solid var(--border-glass) !important;
+    padding: 1.25rem 1.75rem !important;
+}
+
+/* Premium Form Elements */
+.form-label-premium {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.form-control-premium {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    padding: 0.65rem 1rem !important;
+    transition: var(--transition-smooth) !important;
+}
+
+[data-theme="light"] .form-control-premium {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.form-control-premium:focus {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Kanban Loaders & Placeholder Empty States */
+.empty-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+    border: 1px dashed var(--border-glass);
+    border-radius: 14px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+    background: rgba(255,255,255,0.01);
+}
+
+.empty-placeholder i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
 }
