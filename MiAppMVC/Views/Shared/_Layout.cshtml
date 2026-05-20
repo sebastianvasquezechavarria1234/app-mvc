@@ -1,21 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MiAppMVC</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - KanbanFlow</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MiAppMVC.styles.css" asp-append-version="true" />
+    <script>
+        // Prevenir destello blanco en carga inicial
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
 </head>
 <body>
     <div class="bg-glow"></div>
     <div class="bg-glow-secondary"></div>
+    
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom mb-3" style="background: var(--bg-glass); backdrop-filter: blur(12px); border-color: var(--border-glass) !important;">
+        <nav class="navbar navbar-expand-sm navbar-premium navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiAppMVC</a>
+                <a class="navbar-brand brand-gradient" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-kanban me-2"></i>KanbanFlow
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,30 +33,75 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link nav-link-premium active" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-grid-1x2 me-1"></i>Tablero
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link nav-link-premium" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="bi bi-shield-lock me-1"></i>Privacidad
+                            </a>
                         </li>
                     </ul>
+                    <div class="d-flex align-items-center mt-2 mt-sm-0">
+                        <button id="themeToggler" class="theme-switch-btn" onclick="toggleTheme()">
+                            <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
+                            <span id="themeText">Modo Oscuro</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container my-4">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer-premium text-center">
         <div class="container">
-            &copy; 2025 - MiAppMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p class="mb-1">&copy; @DateTime.Now.Year - <span class="brand-gradient">KanbanFlow</span>. Todos los derechos reservados.</p>
+            <small>Desarrollado con ❤️ para <a asp-area="" asp-controller="Home" asp-action="Privacy">Política de Privacidad</a></small>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeUI(newTheme);
+        }
+
+        function updateThemeUI(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (theme === 'dark') {
+                icon.className = 'bi bi-moon-stars-fill';
+                text.innerText = 'Modo Oscuro';
+            } else {
+                icon.className = 'bi bi-sun-fill';
+                text.innerText = 'Modo Claro';
+            }
+        }
+
+        // Sincronizar UI del botón en la carga de la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            updateThemeUI(currentTheme);
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
