@@ -1,31 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-secondary: 'Plus Jakarta Sans', sans-serif;
+
+    /* Tema Oscuro Premium (Por Defecto) */
+    --bg-primary: #08070d;
+    --bg-secondary: #100f1c;
+    --bg-tertiary: #171629;
+    --bg-glass: rgba(16, 15, 28, 0.65);
+    --border-glass: rgba(255, 255, 255, 0.06);
+    --border-glow: rgba(124, 58, 237, 0.15);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --accent-purple: #8b5cf6;
+    --accent-purple-hover: #7c3aed;
+    --accent-purple-glow: rgba(139, 92, 246, 0.4);
+    
+    --accent-cyan: #06b6d4;
+    --accent-cyan-hover: #0891b2;
+    
+    --accent-pink: #ec4899;
+
+    /* Prioridades - Etiquetas Pastel */
+    --priority-low-bg: rgba(6, 182, 212, 0.12);
+    --priority-low-text: #22d3ee;
+    --priority-medium-bg: rgba(245, 158, 11, 0.12);
+    --priority-medium-text: #fbbf24;
+    --priority-high-bg: rgba(239, 68, 68, 0.12);
+    --priority-high-text: #f87171;
+
+    --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+    /* Tema Claro Premium */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-glass: rgba(255, 255, 255, 0.75);
+    --border-glass: rgba(0, 0, 0, 0.08);
+    --border-glow: rgba(139, 92, 246, 0.1);
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+
+    --priority-low-bg: rgba(6, 182, 212, 0.08);
+    --priority-low-text: #0891b2;
+    --priority-medium-bg: rgba(245, 158, 11, 0.08);
+    --priority-medium-text: #d97706;
+    --priority-high-bg: rgba(239, 68, 68, 0.08);
+    --priority-high-text: #dc2626;
+
+    --card-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.06);
+}
+
+/* Reinicio y Base */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: var(--font-primary);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-smooth);
+    overflow-x: hidden;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Efectos de Fondo */
+.bg-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-purple-glow) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.6;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.bg-glow-secondary {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.5;
 }
